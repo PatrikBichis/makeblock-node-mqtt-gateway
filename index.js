@@ -79,11 +79,14 @@ const server = http.listen(port, () => {
         client.publish('makeblock/board/status/conencted', 'false');
 
         try {
-            // bot = new MegaPi("/dev/ttyUSB0", ()=>{
-            //     console.log("Connected to bot")
-            //     updateRGBLed();
-            //     client.publish('makeblock/board/status/conencted', 'true');
-            // });
+            bot = new MegaPi("/dev/ttyUSB0", ()=>{
+                console.log("Connected to bot")
+                setTimeout(()=>{
+                    updateRGBLed();
+                    updateServos(100,20);
+                    client.publish('makeblock/board/status/conencted', 'true');
+                },3000);
+            });
 
         }catch(err){
             client.publish('makeblock/board/status/conencted', 'false');
@@ -124,28 +127,30 @@ const server = http.listen(port, () => {
     })
 
     
-    servo1 = 90;
-    servo2 = 90;
-    //updateServos();´
+    // servo1 = 90;
+    // servo2 = 90;
+    // //updateServos();´
 
-    bot = new MegaPi("/dev/ttyUSB0", ()=>{
-        console.log("Connected to makeblock")
-        updateServos(0, 0);
-        updateServos(90, 90);
-    });
+    // bot = new MegaPi("/dev/ttyUSB0", ()=>{
+    //     console.log("Connected to makeblock")
+    //     updateServos(0, 0);
+    //     updateServos(90, 90);
+    // });
     
 });
 
 
 function updateRGBLed(){
     var port = 4;
-    var slot = 1;
+    var slot = 2;
     var index = 0;
     var r = 255;
     var g = 0;
     var b = 0;
     bot.rgbledDisplay(port,slot,index,r,g,b)
     bot.rgbledShow(port,slot)
+
+    bot.sevenSegmentDisplay(3,t);
 }
 
 function updateServos(servo1, servo2){
