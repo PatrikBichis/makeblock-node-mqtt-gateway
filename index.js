@@ -75,6 +75,19 @@ const server = http.listen(port, () => {
                 client.publish('presence', 'Hello mqtt')
             }
         })
+
+        client.publish('makeblock/board/status/conencted', 'false');
+
+        try {
+            bot = new MegaPi("/dev/ttyUSB0", ()=>{
+                console.log("Connected to bot")
+                updateRGBLed();
+                client.publish('makeblock/board/status/conencted', 'true');
+            });
+
+        }catch(err){
+            client.publish('makeblock/board/status/conencted', 'false');
+        }
     })
 
     client.on('disconnect', function(package){
@@ -90,9 +103,10 @@ const server = http.listen(port, () => {
         console.log(message.toString())
 
         if(topic == 'makeblock/board/1/command/connect'){
+            client.publish('makeblock/board/status/conencted', 'false');
             bot = new MegaPi("/dev/ttyUSB0", ()=>{
                 console.log("Connected to makeblock")
-                client.publish('/makeblock/board/status/conencted', 'true');
+                client.publish('makeblock/board/status/conencted', 'true');
             });
         }
         if(topic == 'makeblock/board/1/command/connect'){
@@ -109,14 +123,11 @@ const server = http.listen(port, () => {
         //client.end()
     })
 
-    bot = new MegaPi("/dev/ttyUSB0", ()=>{
-        console.log("Connected to bot")
-        client.publish('/makeblock/board/status/conencted', 'true');
-    });
+    
     servo1 = 90;
     servo2 = 90;
     //updateServos();
-    updateRGBLed();
+    
 });
 
 
