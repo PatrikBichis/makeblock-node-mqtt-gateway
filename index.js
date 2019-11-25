@@ -142,7 +142,7 @@ const server = http.listen(port, () => {
 
 function updateRGBLed(){
     var port = 4;
-    var slot = 1;
+    var slot = 2;
     var index = 0;
     var r = 255;
     var g = 0;
