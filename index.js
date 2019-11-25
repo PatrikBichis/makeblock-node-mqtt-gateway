@@ -79,11 +79,11 @@ const server = http.listen(port, () => {
         client.publish('makeblock/board/status/conencted', 'false');
 
         try {
-            bot = new MegaPi("/dev/ttyUSB0", ()=>{
-                console.log("Connected to bot")
-                updateRGBLed();
-                client.publish('makeblock/board/status/conencted', 'true');
-            });
+            // bot = new MegaPi("/dev/ttyUSB0", ()=>{
+            //     console.log("Connected to bot")
+            //     updateRGBLed();
+            //     client.publish('makeblock/board/status/conencted', 'true');
+            // });
 
         }catch(err){
             client.publish('makeblock/board/status/conencted', 'false');
