@@ -2,7 +2,7 @@ const request = require('request');
 const express = require('express')
 const app = express()
 const MegaPi = require("./src/megapi").MegaPi;
-const port = 3000
+const port = 3030
 
 var bot = undefined;
 var servo1 = 90;
