@@ -142,12 +142,15 @@ const server = http.listen(port, () => {
 
 function updateRGBLed(){
     var port = 4;
-    var slot = 2;
+    var slot = 1;
     var index = 0;
     var r = 255;
     var g = 0;
     var b = 0;
     bot.rgbledDisplay(port,slot,index,r,g,b)
+    bot.rgbledDisplay(port,slot,index+1,r,g,b)
+    bot.rgbledDisplay(port,slot,index+2,r,g,b)
+    bot.rgbledDisplay(port,slot,index+3,r,g,b)
     bot.rgbledShow(port,slot)
 
     bot.sevenSegmentDisplay(3, 0.1);
