@@ -126,7 +126,13 @@ const server = http.listen(port, () => {
     
     servo1 = 90;
     servo2 = 90;
-    //updateServos();
+    //updateServos();´
+
+    bot = new MegaPi("/dev/ttyUSB0", ()=>{
+        console.log("Connected to makeblock")
+        updateServos(bot, 0, 0);
+        updateServos(bot, 90, 90);
+    });
     
 });
 
