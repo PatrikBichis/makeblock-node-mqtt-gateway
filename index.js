@@ -150,7 +150,7 @@ function updateRGBLed(){
     bot.rgbledDisplay(port,slot,index,r,g,b)
     bot.rgbledShow(port,slot)
 
-    bot.sevenSegmentDisplay(3,t);
+    bot.sevenSegmentDisplay(3, 0.1);
 }
 
 function updateServos(servo1, servo2){
