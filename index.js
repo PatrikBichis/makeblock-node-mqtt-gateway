@@ -112,17 +112,17 @@ const server = http.listen(port, () => {
                 client.publish('makeblock/board/status/conencted', 'true');
             });
         }
-        if(topic == 'makeblock/board/1/command/connect'){
-            //port,slot,index,r,g,b
-            var port = 4;
-            var slot = 1;
-            var index = 0;
-            var r = 255;
-            var g = 0;
-            var b = 0;
-            bot.rgbledDisplay(port,slot,index,r,g,b)
-            bot.rgbledShow(port,slot)
-        }
+        // if(topic == 'makeblock/board/1/command/connect'){
+        //     //port,slot,index,r,g,b
+        //     var port = 4;
+        //     var slot = 1;
+        //     var index = 0;
+        //     var r = 255;
+        //     var g = 0;
+        //     var b = 0;
+        //     bot.rgbledDisplay(port,slot,index,r,g,b)
+        //     bot.rgbledShow(port,slot)
+        // }
         //client.end()
     })
 
