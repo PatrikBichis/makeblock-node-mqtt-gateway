@@ -148,10 +148,10 @@ function updateRGBLed(){
     var g = 0;
     var b = 0;
     bot.rgbledDisplay(port,slot,index,r,g,b)
-    bot.rgbledDisplay(port,slot,index+1,r,g,b)
-    bot.rgbledDisplay(port,slot,index+2,r,g,b)
-    bot.rgbledDisplay(port,slot,index+3,r,g,b)
-    bot.rgbledShow(port,slot)
+    // bot.rgbledDisplay(port,slot,index+1,r,g,b)
+    // bot.rgbledDisplay(port,slot,index+2,r,g,b)
+    // bot.rgbledDisplay(port,slot,index+3,r,g,b)
+    // bot.rgbledShow(port,slot)
 
     bot.sevenSegmentDisplay(3, 0.1);
 }
