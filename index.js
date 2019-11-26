@@ -148,7 +148,7 @@ function ReadSoundSensor(){
     console.log("Connected to sound sensor.")
 }
 
-function ReadLigthSensor(){
+function ReadLightSensor(){
     console.log("Connecting to light sensor...")
     bot.lightSensorRead(8,function(value){
         console.log(value);
