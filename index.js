@@ -141,6 +141,7 @@ const server = http.listen(port, () => {
 });
 
 function ReadSoundSensor(){
+    console.log("Connecting to sound sensor...")
     var port = 7;
     bot.soundSensorRead(port, (value)=>{
         console.log(value);
