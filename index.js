@@ -85,6 +85,7 @@ const server = http.listen(port, () => {
                     updateRGBLed();
                     updateServos(100,20);
                     ReadSoundSensor();
+                    ReadLightSensor();
                     client.publish('makeblock/board/1/status/conencted', 'true');
                 },3000);
             });
@@ -145,6 +146,14 @@ function ReadSoundSensor(){
     var port = 7;
     bot.soundSensorRead(port, onRead);
     console.log("Connected to sound sensor.")
+}
+
+function ReadLigthSensor(){
+    console.log("Connecting to light sensor...")
+    bot.lightSensorRead(8,function(value){
+        console.log(value);
+    });
+    console.log("Connected to light sensor.")
 }
 
 function onRead(value){
