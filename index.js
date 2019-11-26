@@ -163,7 +163,7 @@ function onReadX(x){
   
 function onReadY(y){
     axisY = y;
-    if((oldaxisX != axisX && Math.abs(oldaxisX - axisX) > 2) || (oldaxisY != axisY && Math.abs(oldaxisY - axisY) > 2){ 
+    if((oldaxisX != axisX && Math.abs(oldaxisX - axisX) > 2) || (oldaxisY != axisY && Math.abs(oldaxisY - axisY) > 2)){ 
         console.log("Jostick: X"+ axisX +", Y"+axisY);
         oldaxisX = axisX;
         oldaxisY = axisX;
