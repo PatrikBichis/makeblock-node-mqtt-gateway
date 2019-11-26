@@ -9,6 +9,10 @@ var servo1 = 90;
 var servo2 = 90;
 var axisX = 0;
 var axisY = 0;
+var oldaxisX = 0;
+var oldaxisY = 0;
+var oldSound = 0;
+var oldLight = 0;
 
 var mqtt = require('mqtt')
 var client  = undefined;
@@ -159,29 +163,39 @@ function onReadX(x){
   
 function onReadY(y){
     axisY = y;
-    console.log(axisX+":"+axisY);
+    if(oldaxisX != axisX || oldaxisY != axisY){ 
+        console.log("Jostick: X"+ axisX +", Y"+axisY);
+        oldaxisX = axisX;
+        oldaxisY = axisX;
+    }
     ReadSoundSensor();
     ReadLightSensor();
 }
 
 function ReadSoundSensor(){
-    console.log("Connecting to sound sensor...")
+    //console.log("Connecting to sound sensor...")
     var port = 7;
     bot.soundSensorRead(port, onRead);
-    console.log("Connected to sound sensor.")
+    //console.log("Connected to sound sensor.")
 }
 
 function ReadLightSensor(){
-    console.log("Connecting to light sensor...")
+    //console.log("Connecting to light sensor...")
     bot.lightSensorRead(8,function(value){
-        console.log(value);
+        if(oldLight != value){
+            console.log(value);
+            oldLight = value;
+        }
     });
-    console.log("Connected to light sensor.")
+    //console.log("Connected to light sensor.")
 }
 
 function onRead(value){
-    console.log("Sound sensor value: " + value.toString())
-    console.log(value);
+    if(oldSound != value){
+        console.log("Sound sensor value: " + value.toString());
+        oldSound = value;
+    }
+    //console.log(value);
 }
 
 function updateRGBLed(){
