@@ -145,7 +145,7 @@ const server = http.listen(port, () => {
 });
 
 function loop(){
-    bot.joystickRead(5,1,onReadX);
+    bot.joystickRead(6,1,onReadX);
 }
 
 function onStart(){
@@ -154,7 +154,7 @@ function onStart(){
 
 function onReadX(x){
     axisX = x;
-    bot.joystickRead(5,2,onReadY);
+    bot.joystickRead(6,2,onReadY);
 }
   
 function onReadY(y){
@@ -201,6 +201,6 @@ function updateRGBLed(){
 }
 
 function updateServos(servo1, servo2){
-    bot.servoRun(6,1,servo1);
-    bot.servoRun(6,2,servo2);
+    bot.servoRun(5,1,servo1);
+    bot.servoRun(5,2,servo2);
 }
