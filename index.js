@@ -7,6 +7,8 @@ const port = 3030
 var bot = undefined;
 var servo1 = 90;
 var servo2 = 90;
+var axisX = 0;
+var axisY = 0;
 
 var mqtt = require('mqtt')
 var client  = undefined;
@@ -86,6 +88,9 @@ const server = http.listen(port, () => {
                     updateServos(100,20);
                     ReadSoundSensor();
                     ReadLightSensor();
+
+                    
+
                     client.publish('makeblock/board/1/status/conencted', 'true');
                 },3000);
             });
@@ -140,6 +145,24 @@ const server = http.listen(port, () => {
     // });
     
 });
+
+function loop(){
+    bot.joystickRead(5,1,onReadX);
+}
+
+function onStart(){
+    setInterval(loop,300);
+}
+
+function onReadX(x){
+    axisX = x;
+    bot.joystickRead(5,2,onReadY);
+}
+  
+function onReadY(y){
+    axisY = y;
+    console.log(axisX+":"+axisY);
+}
 
 function ReadSoundSensor(){
     console.log("Connecting to sound sensor...")
