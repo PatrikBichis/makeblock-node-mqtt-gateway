@@ -144,8 +144,10 @@ function ReadSoundSensor(){
     console.log("Connecting to sound sensor...")
     var port = 7;
     bot.soundSensorRead(port, (value)=>{
-        console.log(value);
+        console.log("Sound sensor value: " + value.toString())
     });
+
+    console.log("Connected to sound sensor.")
 }
 
 function updateRGBLed(){
