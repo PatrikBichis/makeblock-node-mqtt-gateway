@@ -76,7 +76,7 @@ const server = http.listen(port, () => {
             }
         })
 
-        client.publish('makeblock/board/status/conencted', 'false');
+        client.publish('makeblock/board/1/status/conencted', 'false');
 
         try {
             bot = new MegaPi("/dev/ttyUSB0", ()=>{
@@ -84,12 +84,13 @@ const server = http.listen(port, () => {
                 setTimeout(()=>{
                     updateRGBLed();
                     updateServos(100,20);
-                    client.publish('makeblock/board/status/conencted', 'true');
+                    ReadSoundSensor();
+                    client.publish('makeblock/board/1/status/conencted', 'true');
                 },3000);
             });
 
         }catch(err){
-            client.publish('makeblock/board/status/conencted', 'false');
+            client.publish('makeblock/board/1/status/conencted', 'false');
         }
     })
 
@@ -106,10 +107,10 @@ const server = http.listen(port, () => {
         console.log(message.toString())
 
         if(topic == 'makeblock/board/1/command/connect'){
-            client.publish('makeblock/board/status/conencted', 'false');
+            client.publish('makeblock/board/1/status/conencted', 'false');
             bot = new MegaPi("/dev/ttyUSB0", ()=>{
                 console.log("Connected to makeblock")
-                client.publish('makeblock/board/status/conencted', 'true');
+                client.publish('makeblock/board/1/status/conencted', 'true');
             });
         }
         // if(topic == 'makeblock/board/1/command/connect'){
@@ -139,6 +140,12 @@ const server = http.listen(port, () => {
     
 });
 
+function ReadSoundSensor(){
+    var port = 7;
+    bot.soundSensorRead(port, (value)=>{
+        console.log(value);
+    });
+}
 
 function updateRGBLed(){
     var port = 4;
