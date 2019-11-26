@@ -163,7 +163,7 @@ function onReadX(x){
   
 function onReadY(y){
     axisY = y;
-    if(oldaxisX != axisX || oldaxisY != axisY){ 
+    if((oldaxisX != axisX && Math.abs(oldaxisX - axisX) > 2) || (oldaxisY != axisY && Math.abs(oldaxisY - axisY) > 2){ 
         console.log("Jostick: X"+ axisX +", Y"+axisY);
         oldaxisX = axisX;
         oldaxisY = axisX;
@@ -182,7 +182,7 @@ function ReadSoundSensor(){
 function ReadLightSensor(){
     //console.log("Connecting to light sensor...")
     bot.lightSensorRead(8,function(value){
-        if(oldLight != value){
+        if(oldLight != value && Math.abs(oldLight - value) > 2){
             console.log(value);
             oldLight = value;
         }
@@ -191,7 +191,7 @@ function ReadLightSensor(){
 }
 
 function onRead(value){
-    if(oldSound != value){
+    if(oldSound != value && Math.abs(oldSound - value) > 2){
         console.log("Sound sensor value: " + value.toString());
         oldSound = value;
     }
