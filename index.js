@@ -86,10 +86,8 @@ const server = http.listen(port, () => {
                 setTimeout(()=>{
                     updateRGBLed();
                     updateServos(100,20);
-                    ReadSoundSensor();
-                    ReadLightSensor();
 
-                    
+                    onStart();
 
                     client.publish('makeblock/board/1/status/conencted', 'true');
                 },3000);
@@ -162,6 +160,8 @@ function onReadX(x){
 function onReadY(y){
     axisY = y;
     console.log(axisX+":"+axisY);
+    // ReadSoundSensor();
+    // ReadLightSensor();
 }
 
 function ReadSoundSensor(){
