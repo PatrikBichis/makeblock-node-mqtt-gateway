@@ -165,6 +165,7 @@ function onReadY(y){
     axisY = y;
     if((oldaxisX != axisX && Math.abs(oldaxisX - axisX) > 2) || (oldaxisY != axisY && Math.abs(oldaxisY - axisY) > 2)){ 
         console.log("Jostick: X"+ axisX +", Y"+axisY);
+        sendSensorData(1, 6, "Jostick", axisX, axisY);
         oldaxisX = axisX;
         oldaxisY = axisX;
     }
@@ -184,6 +185,7 @@ function ReadLightSensor(){
     bot.lightSensorRead(8,function(value){
         if(oldLight != value && Math.abs(oldLight - value) > 2){
             console.log(value);
+            sendSensorData(1, 8, "LightSensor", value, null);
             oldLight = value;
         }
     });
@@ -193,9 +195,20 @@ function ReadLightSensor(){
 function onRead(value){
     if(oldSound != value && Math.abs(oldSound - value) > 2){
         console.log("Sound sensor value: " + value.toString());
+        sendSensorData(1, 7, "Sound", value, null);
         oldSound = value;
     }
     //console.log(value);
+}
+
+function sendSensorData(board, port, type, valueA, valueB){
+    var data = {
+        port: port,
+        type: type,
+        valueA: valueA,
+        valueB: valueB
+    }
+    client.publish('makeblock/board/'+board+'/sensor', JSON.stringify(data));
 }
 
 function updateRGBLed(){
