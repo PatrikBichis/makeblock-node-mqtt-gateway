@@ -143,11 +143,13 @@ const server = http.listen(port, () => {
 function ReadSoundSensor(){
     console.log("Connecting to sound sensor...")
     var port = 7;
-    bot.soundSensorRead(port, (value)=>{
-        console.log("Sound sensor value: " + value.toString())
-    });
-
+    bot.soundSensorRead(port, onRead);
     console.log("Connected to sound sensor.")
+}
+
+function onRead(value){
+    console.log("Sound sensor value: " + value.toString())
+    console.log(value);
 }
 
 function updateRGBLed(){
