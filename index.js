@@ -160,8 +160,8 @@ function onReadX(x){
 function onReadY(y){
     axisY = y;
     console.log(axisX+":"+axisY);
-    // ReadSoundSensor();
-    // ReadLightSensor();
+    ReadSoundSensor();
+    ReadLightSensor();
 }
 
 function ReadSoundSensor(){
