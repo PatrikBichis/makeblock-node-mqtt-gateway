@@ -82,7 +82,7 @@ const server = http.listen(port, () => {
             }
         })
 
-        client.publish('makeblock/board/1/status/conencted', 'false');
+        client.publish('makeblock/orion/1/status/conencted', 'false');
 
         try {
             bot = new MegaPi("/dev/ttyUSB0", ()=>{
@@ -93,12 +93,12 @@ const server = http.listen(port, () => {
 
                     onStart();
 
-                    client.publish('makeblock/board/1/status/conencted', 'true');
+                    client.publish('makeblock/orion/1/status/conencted', 'true');
                 },3000);
             });
 
         }catch(err){
-            client.publish('makeblock/board/1/status/conencted', 'false');
+            client.publish('makeblock/orion/1/status/conencted', 'false');
         }
     })
 
@@ -114,14 +114,14 @@ const server = http.listen(port, () => {
         // message is Buffer
         console.log(message.toString())
 
-        if(topic == 'makeblock/board/1/command/connect'){
-            client.publish('makeblock/board/1/status/conencted', 'false');
+        if(topic == 'makeblock/orion/1/command/connect'){
+            client.publish('makeblock/orion/1/status/conencted', 'false');
             bot = new MegaPi("/dev/ttyUSB0", ()=>{
                 console.log("Connected to makeblock")
-                client.publish('makeblock/board/1/status/conencted', 'true');
+                client.publish('makeblock/orion/1/status/conencted', 'true');
             });
         }
-        // if(topic == 'makeblock/board/1/command/connect'){
+        // if(topic == 'makeblock/orion/1/command/connect'){
         //     //port,slot,index,r,g,b
         //     var port = 4;
         //     var slot = 1;
@@ -163,12 +163,12 @@ function onReadX(x){
   
 function onReadY(y){
     axisY = y;
-    if((oldaxisX != axisX && Math.abs(oldaxisX - axisX) > 2) || (oldaxisY != axisY && Math.abs(oldaxisY - axisY) > 2)){ 
-        console.log("Jostick: X"+ axisX +", Y"+axisY);
-        sendSensorData(1, 6, "Jostick", axisX, axisY);
+    // if((oldaxisX != axisX && Math.abs(oldaxisX - axisX) > 2) || (oldaxisY != axisY && Math.abs(oldaxisY - axisY) > 2)){ 
+    //     console.log("Jostick: X"+ axisX +", Y"+axisY);
+        sendSensorData(1, "orion", 6, "Joystick", axisX, axisY);
         oldaxisX = axisX;
         oldaxisY = axisX;
-    }
+    // }
     ReadSoundSensor();
     ReadLightSensor();
 }
@@ -183,32 +183,55 @@ function ReadSoundSensor(){
 function ReadLightSensor(){
     //console.log("Connecting to light sensor...")
     bot.lightSensorRead(8,function(value){
-        if(oldLight != value && Math.abs(oldLight - value) > 2){
+        // if(oldLight != value && Math.abs(oldLight - value) > 2){
             console.log(value);
-            sendSensorData(1, 8, "LightSensor", value, null);
+            sendSensorData(1, "orion", 8, "Light", value, null);
             oldLight = value;
-        }
+        // }
     });
     //console.log("Connected to light sensor.")
 }
 
 function onRead(value){
-    if(oldSound != value && Math.abs(oldSound - value) > 2){
+    // if(oldSound != value && Math.abs(oldSound - value) > 2){
         console.log("Sound sensor value: " + value.toString());
-        sendSensorData(1, 7, "Sound", value, null);
+        sendSensorData(1, "orion", 7, "Sound", value, null);
         oldSound = value;
-    }
+    // }
     //console.log(value);
 }
 
-function sendSensorData(board, port, type, valueA, valueB){
+function sendSensorData(id,board, port, type, valueA, valueB){
     var data = {
+        id: id,
+        board, board,
         port: port,
         type: type,
+        unit: "%",
+        mapping:{min:0, max:1023},
         valueA: valueA,
         valueB: valueB
     }
-    client.publish('makeblock/board/'+board+'/sensor', JSON.stringify(data));
+    
+    if(type == "Sound"){
+        data.unit = "db";
+    };
+
+    client.publish('makeblock/'+board+'/'+id+'/sensor', JSON.stringify(data));
+}
+
+function sendCommandData(id,board,port,type,valueA, valueB){
+    var data = {
+        id: id,
+        board, board,
+        port: port,
+        type: type,
+        unit: "°",
+        mapping: null,
+        payload: valueA
+    }
+
+    client.publish('makeblock/'+board+'/'+id+'/command/'+type.toLowerCase() +', JSON.stringify(data));
 }
 
 function updateRGBLed(){
