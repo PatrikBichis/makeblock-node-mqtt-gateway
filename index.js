@@ -9,6 +9,7 @@ import {device} from "./src/devices/device";
 const port = 3030
 
 var bot = undefined;
+var boards = [];
 var servo1 = 90;
 var servo2 = 90;
 var axisX = 0;
@@ -86,8 +87,9 @@ const server = http.listen(port, () => {
             }
         })
 
-        bot = new board(1, "orion", "/dev/ttyUSB0");
-        bot.devices.push(new device(bot,4,deviceType.RGB_LED));
+        var orion1 = new board(1, "orion", "/dev/ttyUSB0");
+        boards.push(orion1);
+        orion1.devices.push(new device(bot,4,2,deviceType.RGB_LED));
         
         
         // client.publish('makeblock/orion/1/status/conencted', 'false');
@@ -121,8 +123,13 @@ const server = http.listen(port, () => {
     client.on('message', function (topic, message) {
         // message is Buffer
         console.log(message.toString())
+        var parts = topic.split("/");
 
         if(topic == 'makeblock/orion/1/command/connect'){
+
+            // this.boards.array.forEach(board => {
+            //     if(board.id == 
+            // });
             client.publish('makeblock/orion/1/status/conencted', 'false');
             bot = new MegaPi("/dev/ttyUSB0", ()=>{
                 console.log("Connected to makeblock")
