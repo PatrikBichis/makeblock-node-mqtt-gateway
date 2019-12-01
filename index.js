@@ -2,6 +2,10 @@ const request = require('request');
 const express = require('express')
 const app = express()
 const MegaPi = require("./src/megapi").MegaPi;
+const device = require("./src/devices/device");
+import { deviceType } from "./deviceTypes";
+import { board } from "./src/boards/board";
+import {device} from "./src/devices/device";
 const port = 3030
 
 var bot = undefined;
@@ -82,24 +86,28 @@ const server = http.listen(port, () => {
             }
         })
 
-        client.publish('makeblock/orion/1/status/conencted', 'false');
+        bot = new board(1, "orion", "/dev/ttyUSB0");
+        bot.devices.push(new device(bot,4,deviceType.RGB_LED));
+        
+        
+        // client.publish('makeblock/orion/1/status/conencted', 'false');
 
-        try {
-            bot = new MegaPi("/dev/ttyUSB0", ()=>{
-                console.log("Connected to bot")
-                setTimeout(()=>{
-                    updateRGBLed();
-                    updateServos(100,20);
+        // try {
+        //     bot = new MegaPi("/dev/ttyUSB0", ()=>{
+        //         console.log("Connected to bot")
+        //         setTimeout(()=>{
+        //             updateRGBLed();
+        //             updateServos(100,20);
 
-                    onStart();
+        //             onStart();
 
-                    client.publish('makeblock/orion/1/status/conencted', 'true');
-                },3000);
-            });
+        //             client.publish('makeblock/orion/1/status/conencted', 'true');
+        //         },3000);
+        //     });
 
-        }catch(err){
-            client.publish('makeblock/orion/1/status/conencted', 'false');
-        }
+        // }catch(err){
+        //     client.publish('makeblock/orion/1/status/conencted', 'false');
+        // }
     })
 
     client.on('disconnect', function(package){
@@ -231,7 +239,7 @@ function sendCommandData(id,board,port,type,valueA, valueB){
         payload: valueA
     }
 
-    client.publish('makeblock/'+board+'/'+id+'/command/'+type.toLowerCase() +', JSON.stringify(data));
+    client.publish('makeblock/'+board+'/'+id+'/command/'+type.toLowerCase() +'', JSON.stringify(data));
 }
 
 function updateRGBLed(){
